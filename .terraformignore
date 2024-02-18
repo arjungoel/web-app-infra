@@ -1,0 +1,14 @@
+# Local Terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .tfvars file
+*.tfvars
+
+# Ignore sensitive files
+*.pem
+*.key
+*.pub
