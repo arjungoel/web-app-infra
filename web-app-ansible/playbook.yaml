@@ -1,0 +1,41 @@
+---
+- name: Install Apache on the host
+  hosts: all
+  become: true
+
+  handlers:
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+      when: ansible_os_family == 'CentOS'
+
+  tasks:
+    - name: Update yum package cache (for CentOS)
+      yum:
+        update_cache: yes
+      when: ansible_os_family == 'CentOS'
+
+    - name: Install Apache.
+      yum: 
+        name: 
+          - httpd 
+          - httpd-devel
+          - apache2
+          - php
+          - php-mysql
+        state: present
+      when: ansible_os_family == 'CentOS'
+    
+    - name: Start Apache service
+      service:
+        name: apache2
+        state: started
+      when: ansible_os_family == 'CentOS'
+
+    - name: Deploy web application code
+      copy:
+        src: /path/to/your/webapp
+        dest: /var/www/html/
+      notify:
+        - Restart Apache
