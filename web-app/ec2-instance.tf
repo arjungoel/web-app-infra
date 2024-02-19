@@ -1,12 +1,10 @@
 resource "aws_instance" "web_app" {
   ami                    = data.aws_ami.amazon_linux.id
   instance_type          = var.instance_type
-  subnet_id              = aws_subnet.public_subnet.0.id
+  subnet_id              = aws_subnet.private_subnet.0.id
   vpc_security_group_ids = [aws_security_group.client_alb.id]
   user_data              = <<EOF
 #!/bin/bash
-sudo yum update -y
-sudo yum install -y httpd
 sudo systemctl start httpd
 sudo systemctl enable httpd
 sudo echo '<center><h1>Web App!!!</h1></center>' > /var/www/html/index.html
